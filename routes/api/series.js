@@ -3,14 +3,14 @@ const router = express.Router();
 
 const auth = require('../../middleware/auth');
 
-const { getCurrentSeason } = require('../../utilities/scrapers/hsscraper');
+const { getSeries } = require('../../utilities/scrapers/hsscraper');
 
 // @route   GET api/series/current
 // @desc    Get all currently airing series
 // @access  Private
 router.get('/current', auth, async (req, res) => {
   try {
-    const series = await getCurrentSeason();
+    const series = await getSeries('current');
 
     res.json(series);
   } catch (err) {

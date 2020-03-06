@@ -1,5 +1,6 @@
 const axios = require('axios');
 const cheerio = require('cheerio');
+const url = require('url');
 
 const SITE_HS_SITE = 'https://horriblesubs.info';
 const SITE_HS_API = 'https://horriblesubs.info/api.php';
@@ -10,18 +11,30 @@ const pause = interval => {
   return new Promise(resolve => setTimeout(resolve, interval));
 };
 
-const getCurrentSeason = async () => {
+const getSeries = async type => {
   let series = [];
+  let urlType = '';
+
+  switch (type) {
+    case 'current':
+      urlType = url.resolve(SITE_HS_SITE, '/current-season');
+      break;
+    case 'all':
+      urlType = url.resolve(SITE_HS_SITE, '/shows');
+      break;
+    default:
+      urlType = SITE_HS_SITE;
+  }
 
   await axios
-    .get(SITE_HS_SITE + '/current-season')
+    .get(urlType)
     .then(res => {
       const $ = cheerio.load(res.data);
 
       $('.ind-show > a').each((i, elem) => {
         series.push({
           title: $(elem).attr('title'),
-          link: $(elem).attr('href')
+          link: url.resolve(SITE_HS_SITE, $(elem).attr('href'))
         });
       });
     })
@@ -30,4 +43,4 @@ const getCurrentSeason = async () => {
   return series;
 };
 
-module.exports = { getCurrentSeason };
+module.exports = { getSeries };
