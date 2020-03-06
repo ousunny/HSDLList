@@ -5,6 +5,8 @@ const auth = require('../../middleware/auth');
 
 const Profile = require('../../models/Profile');
 
+const { getSeriesDetails } = require('../../utilities/scrapers/hsscraper');
+
 // @route   GET api/profile/me
 // @desc    Get current user's profile
 // @access  Private
@@ -47,7 +49,9 @@ router.post('/series', auth, async (req, res) => {
     if (!profile)
       return res.status(400).json({ msg: 'Profile does not exist for user' });
 
-    const { showId, title, latest } = req.body;
+    const { showUrl, latest } = req.body;
+
+    const { showId, title } = await getSeriesDetails(showUrl);
 
     const isExist = profile.series.some(show => show.showId === showId);
     if (isExist)
