@@ -24,6 +24,9 @@ router.get('/current', auth, async (req, res) => {
 // @access  Private
 router.get('/all', auth, async (req, res) => {
   try {
+    const series = await getSeries('all');
+
+    res.json(series);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');
