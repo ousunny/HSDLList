@@ -43,4 +43,35 @@ const getSeries = async type => {
   return series;
 };
 
-module.exports = { getSeries };
+const getSeriesDetails = async showUrl => {
+  let showId = '';
+  let title = '';
+
+  await axios
+    .get(showUrl)
+    .then(res => {
+      const $ = cheerio.load(res.data);
+
+      title = $('h1').text();
+
+      const showIdScript = $('script').filter((i, elem) => {
+        return (
+          $(elem)
+            .html()
+            .trim()
+            .indexOf('var hs_showid') >= 0
+        );
+      });
+
+      showId = $(showIdScript).html();
+
+      showId = showId
+        .substring(showId.indexOf('=') + 1, showId.indexOf(';'))
+        .substr(1);
+    })
+    .catch(err => console.log(err.message));
+
+  return { showId, title };
+};
+
+module.exports = { getSeries, getSeriesDetails };
