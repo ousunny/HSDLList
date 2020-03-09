@@ -108,7 +108,7 @@ router.patch('/episodes', auth, async (req, res) => {
     const { episodes } = req.body;
 
     profile.episodes = profile.episodes.filter(
-      episode => !episodes.includes(episode._id)
+      episode => !episodes.includes(episode._id.toString())
     );
 
     await profile.save();
