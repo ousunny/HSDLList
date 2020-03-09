@@ -5,8 +5,6 @@ const url = require('url');
 const SITE_HS_SITE = 'https://horriblesubs.info';
 const SITE_HS_API = 'https://horriblesubs.info/api.php';
 
-const promises = [];
-
 const pause = interval => {
   return new Promise(resolve => setTimeout(resolve, interval));
 };
@@ -74,4 +72,80 @@ const getSeriesDetails = async showUrl => {
   return { showId, title };
 };
 
-module.exports = { getSeries, getSeriesDetails };
+const getEpisodes = async series => {
+  let episodes = [];
+
+  for (let i = 0; i < series.length; i++) {
+    await pause(500);
+    await axios
+      .get(SITE_HS_API, {
+        params: {
+          method: 'getshows',
+          type: 'show',
+          showid: series[i].showId,
+          nextid: 0
+        }
+      })
+      .then(res => {
+        const $ = cheerio.load(res.data);
+        const profileLatest = parseInt(series[i].latest);
+        const title = series[i].title;
+        let latestEpisode = profileLatest;
+        let currentEpisode = profileLatest;
+
+        const rlsInfoContainer = $('.rls-info-container').each((i, elem) => {
+          currentEpisode = parseInt($(elem).attr('id'));
+
+          if (currentEpisode <= profileLatest) return false;
+
+          if (i === 0) latestEpisode = currentEpisode;
+
+          if (i === 0 && profileLatest === latestEpisode) return false;
+
+          const episode = {
+            title,
+            episode: currentEpisode,
+            links: {
+              '360p': {
+                server: 'Magnet',
+                link: $(elem)
+                  .find('.link-360p > .hs-magnet-link > a')
+                  .attr('href')
+              },
+              '480p': {
+                server: 'Magnet',
+                link: $(elem)
+                  .find('.link-480p > .hs-magnet-link > a')
+                  .attr('href')
+              },
+              '720p': {
+                server: 'Magnet',
+                link: $(elem)
+                  .find('.link-720p > .hs-magnet-link > a')
+                  .attr('href')
+              },
+              '1080p': {
+                server: 'Magnet',
+                link: $(elem)
+                  .find('.link-1080p > .hs-magnet-link > a')
+                  .attr('href')
+              }
+            }
+          };
+
+          episodes.push(episode);
+        });
+
+        series[i].latest = latestEpisode;
+      })
+      .catch(err => console.log(err));
+  }
+
+  return { series, episodes };
+};
+
+const getUpdatedSeries = async profileSeries => {
+  return await getEpisodes(profileSeries);
+};
+
+module.exports = { getSeries, getSeriesDetails, getUpdatedSeries };

@@ -3,7 +3,13 @@ const router = express.Router();
 
 const auth = require('../../middleware/auth');
 
-const { getSeries } = require('../../utilities/scrapers/hsscraper');
+const Profile = require('../../models/Profile');
+
+const {
+  getSeries,
+  getSeriesDetails,
+  getUpdatedSeries
+} = require('../../utilities/scrapers/hsscraper');
 
 // @route   GET api/series/current
 // @desc    Get all currently airing series
@@ -38,6 +44,19 @@ router.get('/all', auth, async (req, res) => {
 // @access  Private
 router.get('/update', auth, async (req, res) => {
   try {
+    const profile = await Profile.findOne({ user: req.user.id });
+
+    if (!profile)
+      return res.status(400).json({ msg: 'Profile does not exist for user' });
+
+    const { series, episodes } = await getUpdatedSeries(profile.series);
+
+    profile.series = series;
+    profile.episodes = profile.episodes.concat(episodes);
+
+    await profile.save();
+
+    res.json(profile);
   } catch (err) {
     console.error(err.message);
     res.status(500).send('Server error');

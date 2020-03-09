@@ -31,16 +31,48 @@ const ProfileSchema = new mongoose.Schema({
         type: String,
         required: true
       },
-      links: [
-        {
-          server: {
-            type: String
-          },
-          link: {
-            type: String
+      links: {
+        '360p': [
+          {
+            server: {
+              type: String
+            },
+            link: {
+              type: String
+            }
           }
-        }
-      ]
+        ],
+        '480p': [
+          {
+            server: {
+              type: String
+            },
+            link: {
+              type: String
+            }
+          }
+        ],
+        '720p': [
+          {
+            server: {
+              type: String
+            },
+            link: {
+              type: String
+            }
+          }
+        ],
+        '1080p': [
+          {
+            server: {
+              type: String
+            },
+            link: {
+              type: String
+            }
+          }
+        ]
+      }
     }
   ]
 });
