@@ -12,6 +12,8 @@ import {
 
 import setAuthToken from '../utils/setAuthToken';
 
+import { setAlert } from './alert';
+
 export const loadUser = () => async dispatch => {
   localStorage.token && setAuthToken(localStorage.token);
 
@@ -51,6 +53,8 @@ export const register = ({ username, password }) => async dispatch => {
   } catch (err) {
     const { errors } = err.response.data;
 
+    errors && errors.map(error => dispatch(setAlert(error.msg, 'error', 3000)));
+
     dispatch({ type: REGISTER_FAIL });
   }
 };
@@ -78,6 +82,8 @@ export const login = ({ username, password }) => async dispatch => {
     dispatch(loadUser());
   } catch (err) {
     const { errors } = err.response.data;
+
+    errors && errors.map(error => dispatch(setAlert(error.msg, 'error', 3000)));
 
     dispatch({
       type: LOGIN_FAIL

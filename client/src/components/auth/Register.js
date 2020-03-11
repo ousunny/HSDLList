@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { setAlert } from '../../actions/alert';
 import { register } from '../../actions/auth';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -38,7 +39,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Register = ({ register, auth: { isAuthenticated, user, loading } }) => {
+const Register = ({
+  setAlert,
+  register,
+  auth: { isAuthenticated, user, loading }
+}) => {
   const classes = useStyles();
   const [formData, setFormData] = useState({
     username: '',
@@ -55,7 +60,8 @@ const Register = ({ register, auth: { isAuthenticated, user, loading } }) => {
     e.preventDefault();
 
     if (password !== password2) {
-      console.log('Passwords do not match');
+      console.log('a');
+      setAlert('Passwords do not match!', 'error', 3000);
     } else {
       register({ username, password });
     }
@@ -121,6 +127,7 @@ const Register = ({ register, auth: { isAuthenticated, user, loading } }) => {
 };
 
 Register.propTypes = {
+  setAlert: PropTypes.func.isRequired,
   register: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -131,5 +138,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { register }
+  { setAlert, register }
 )(Register);
