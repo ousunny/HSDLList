@@ -54,3 +54,39 @@ export const register = ({ username, password }) => async dispatch => {
     dispatch({ type: REGISTER_FAIL });
   }
 };
+
+export const login = ({ username, password }) => async dispatch => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  };
+
+  const body = JSON.stringify({
+    username,
+    password
+  });
+
+  try {
+    const res = await axios.post('/api/auth', body, config);
+
+    dispatch({
+      type: LOGIN_SUCCESS,
+      payload: res.data
+    });
+
+    dispatch(loadUser());
+  } catch (err) {
+    const { errors } = err.response.data;
+
+    dispatch({
+      type: LOGIN_FAIL
+    });
+  }
+};
+
+export const logout = () => async dispatch => {
+  dispatch({
+    type: LOGOUT
+  });
+};
