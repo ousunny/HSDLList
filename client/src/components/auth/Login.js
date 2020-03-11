@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import { setAlert } from '../../actions/alert';
 import { login } from '../../actions/auth';
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -38,7 +39,11 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Login = ({ login, auth: { isAuthenticated, user, loading } }) => {
+const Login = ({
+  setAlert,
+  login,
+  auth: { isAuthenticated, user, loading }
+}) => {
   const classes = useStyles();
   const [formData, setFormData] = useState({
     username: '',
@@ -104,6 +109,7 @@ const Login = ({ login, auth: { isAuthenticated, user, loading } }) => {
 };
 
 Login.propTypes = {
+  setAlert: PropTypes.func.isRequired,
   login: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
@@ -114,5 +120,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { login }
+  { setAlert, login }
 )(Login);
