@@ -1,4 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import { register } from '../../actions/auth';
 
 import { makeStyles } from '@material-ui/core/styles';
 import {
@@ -34,15 +38,35 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const Register = ({}) => {
+const Register = ({ register, auth: { isAuthenticated, user, loading } }) => {
   const classes = useStyles();
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+    password2: ''
+  });
+
+  const { username, password, password2 } = formData;
+
+  const onChange = e =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+
+  const onSubmit = e => {
+    e.preventDefault();
+
+    if (password !== password2) {
+      console.log('Passwords do not match');
+    } else {
+      register({ username, password });
+    }
+  };
 
   return (
     <Paper className={classes.root}>
       <div className={classes.heading}>
         <Typography variant="h2">Sign up</Typography>
       </div>
-      <form className={classes.form}>
+      <form className={classes.form} onSubmit={e => onSubmit(e)}>
         <Grid container className={classes.fields} spacing={3}>
           <Grid item xs={12}>
             <TextField
@@ -50,22 +74,30 @@ const Register = ({}) => {
               name="username"
               placeholder="username"
               fullWidth
+              value={username}
+              onChange={e => onChange(e)}
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
               required
+              type="password"
               name="password"
               placeholder="password"
               fullWidth
+              value={password}
+              onChange={e => onChange(e)}
             />
           </Grid>
           <Grid item xs={12}>
             <TextField
               required
+              type="password"
               name="password2"
               placeholder="verify password"
               fullWidth
+              value={password2}
+              onChange={e => onChange(e)}
             />
           </Grid>
           <Grid item xs={12}>
@@ -88,4 +120,16 @@ const Register = ({}) => {
   );
 };
 
-export default Register;
+Register.propTypes = {
+  register: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default connect(
+  mapStateToProps,
+  { register }
+)(Register);
