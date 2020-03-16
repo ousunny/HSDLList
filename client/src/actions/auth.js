@@ -13,6 +13,7 @@ import {
 import setAuthToken from '../utils/setAuthToken';
 
 import { setAlert } from './alert';
+import { createProfile } from './profile';
 
 export const loadUser = () => async dispatch => {
   localStorage.token && setAuthToken(localStorage.token);
@@ -48,6 +49,8 @@ export const register = ({ username, password }) => async dispatch => {
       type: REGISTER_SUCCESS,
       payload: res.data
     });
+
+    dispatch(createProfile());
 
     dispatch(loadUser());
   } catch (err) {
