@@ -118,7 +118,7 @@ const Register = ({
             </Button>
           </Grid>
           <Grid item xs={12} className={classes.center}>
-            <Link href="/login">Already have an account?</Link>
+            <Link href="/login">Already have an account? Click here!</Link>
           </Grid>
         </Grid>
       </form>
