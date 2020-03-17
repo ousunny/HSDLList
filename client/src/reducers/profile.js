@@ -1,4 +1,4 @@
-import { PROFILE_CREATE } from '../actions/types';
+import { PROFILE_CREATE, PROFILE_GET } from '../actions/types';
 
 const initialState = {
   profile: null,
@@ -10,9 +10,11 @@ export default function(state = initialState, action) {
 
   switch (type) {
     case PROFILE_CREATE:
+    case PROFILE_GET:
       return {
         ...state,
-        profile: payload
+        profile: payload,
+        loading: false
       };
     default:
       return state;
