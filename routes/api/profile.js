@@ -49,7 +49,8 @@ router.post('/series', auth, async (req, res) => {
     if (!profile)
       return res.status(400).json({ msg: 'Profile does not exist for user' });
 
-    const { showUrl, latest } = req.body;
+    const { showUrl, starting } = req.body;
+    const latest = starting - 1;
 
     const { showId, title } = await getSeriesDetails(showUrl);
 
