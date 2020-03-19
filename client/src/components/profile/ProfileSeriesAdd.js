@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { setAlert } from '../../actions/alert';
-import { getCurrentSeason } from '../../actions/profile';
+import { getProfile, getCurrentSeason } from '../../actions/profile';
 
 import ProfileSeriesAddItem from './ProfileSeriesAddItem';
 
@@ -49,14 +49,16 @@ const useStyles = makeStyles(theme => ({
 
 const ProfileSeriesAdd = ({
   setAlert,
+  getProfile,
   getCurrentSeason,
   profile: { shows, loading }
 }) => {
   const classes = useStyles();
 
   useEffect(() => {
+    getProfile();
     getCurrentSeason();
-  }, [getCurrentSeason]);
+  }, [getProfile, getCurrentSeason]);
 
   const [tab, setTab] = React.useState(0);
 
@@ -106,6 +108,7 @@ const ProfileSeriesAdd = ({
 
 ProfileSeriesAdd.propTypes = {
   setAlert: PropTypes.func.isRequired,
+  getProfile: PropTypes.func.isRequired,
   getCurrentSeason: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired
 };
@@ -116,5 +119,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { setAlert, getCurrentSeason }
+  { setAlert, getProfile, getCurrentSeason }
 )(ProfileSeriesAdd);

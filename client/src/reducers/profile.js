@@ -28,7 +28,14 @@ export default function(state = initialState, action) {
     case PROFILE_SERIES_ALL:
       return {
         ...state,
-        shows: payload,
+        shows: payload.filter(
+          show =>
+            !state.profile.series.find(
+              profileShow =>
+                profileShow.title.replace(/\u2013|\u2014/g, '-') ===
+                show.title.replace(/\u2013|u2014/g, '-')
+            )
+        ),
         loading: false
       };
     default:
