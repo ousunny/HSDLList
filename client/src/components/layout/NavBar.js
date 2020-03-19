@@ -46,7 +46,7 @@ const NavBar = ({ auth: { isAuthenticated } }) => {
         </Typography>
         {isAuthenticated ? (
           <div>
-            <IconButton className={classes.button}>
+            <IconButton href="/series/add" className={classes.button}>
               <Add />
             </IconButton>
             <IconButton className={classes.button}>
