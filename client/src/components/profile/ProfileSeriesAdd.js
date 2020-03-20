@@ -3,7 +3,11 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { setAlert } from '../../actions/alert';
-import { getProfile, getCurrentSeason } from '../../actions/profile';
+import {
+  getProfile,
+  getCurrentSeason,
+  getAllShows
+} from '../../actions/profile';
 
 import ProfileSeriesAddItem from './ProfileSeriesAddItem';
 
@@ -51,18 +55,21 @@ const ProfileSeriesAdd = ({
   setAlert,
   getProfile,
   getCurrentSeason,
-  profile: { shows, loading }
+  getAllShows,
+  profile: { current, all, loading }
 }) => {
   const classes = useStyles();
 
   useEffect(() => {
     getProfile();
     getCurrentSeason();
-  }, [getProfile, getCurrentSeason]);
+    getAllShows();
+  }, [getProfile, getCurrentSeason, getAllShows]);
 
   const [tab, setTab] = React.useState(0);
 
   const handleTabChange = (event, newTab) => {
+    newTab === 0 ? getCurrentSeason() : getAllShows();
     setTab(newTab);
   };
 
@@ -90,7 +97,7 @@ const ProfileSeriesAdd = ({
             <TableContainer>
               <Table>
                 <TableBody>
-                  {shows.map((show, index) => (
+                  {current.map((show, index) => (
                     <ProfileSeriesAddItem key={index} show={show} />
                   ))}
                 </TableBody>
@@ -98,7 +105,15 @@ const ProfileSeriesAdd = ({
             </TableContainer>
           </TabPanel>
           <TabPanel value={tab} index={1}>
-            Bye there
+            <TableContainer>
+              <Table>
+                <TableBody>
+                  {all.map((show, index) => (
+                    <ProfileSeriesAddItem key={index} show={show} />
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </TabPanel>
         </Fragment>
       )}
@@ -110,6 +125,7 @@ ProfileSeriesAdd.propTypes = {
   setAlert: PropTypes.func.isRequired,
   getProfile: PropTypes.func.isRequired,
   getCurrentSeason: PropTypes.func.isRequired,
+  getAllShows: PropTypes.func.isRequired,
   profile: PropTypes.object.isRequired
 };
 
@@ -119,5 +135,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { setAlert, getProfile, getCurrentSeason }
+  { setAlert, getProfile, getCurrentSeason, getAllShows }
 )(ProfileSeriesAdd);

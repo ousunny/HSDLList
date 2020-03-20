@@ -64,6 +64,21 @@ export const getCurrentSeason = () => async dispatch => {
   }
 };
 
+export const getAllShows = () => async dispatch => {
+  try {
+    const res = await axios.get('/api/series/all');
+
+    dispatch({
+      type: PROFILE_SERIES_ALL,
+      payload: res.data
+    });
+  } catch (err) {
+    const { errors } = err.response.data;
+
+    errors && errors.map(error => dispatch(setAlert(error.msg, 'error', 3000)));
+  }
+};
+
 export const addProfileSeries = (showUrl, starting) => async dispatch => {
   const config = {
     headers: {

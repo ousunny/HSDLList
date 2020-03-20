@@ -8,7 +8,8 @@ import {
 
 const initialState = {
   profile: null,
-  shows: [],
+  current: [],
+  all: [],
   loading: true
 };
 
@@ -25,10 +26,9 @@ export default function(state = initialState, action) {
         loading: false
       };
     case PROFILE_SERIES_CURRENT:
-    case PROFILE_SERIES_ALL:
       return {
         ...state,
-        shows: payload.filter(
+        current: payload.filter(
           show =>
             !state.profile.series.find(
               profileShow =>
@@ -38,6 +38,20 @@ export default function(state = initialState, action) {
         ),
         loading: false
       };
+    case PROFILE_SERIES_ALL:
+      return {
+        ...state,
+        all: payload.filter(
+          show =>
+            !state.profile.series.find(
+              profileShow =>
+                profileShow.title.replace(/\u2013|\u2014/g, '-') ===
+                show.title.replace(/\u2013|u2014/g, '-')
+            )
+        ),
+        loading: false
+      };
+
     default:
       return state;
   }
