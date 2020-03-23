@@ -49,7 +49,7 @@ const NavBar = ({ auth: { isAuthenticated } }) => {
             <IconButton href="/series/add" className={classes.button}>
               <Add />
             </IconButton>
-            <IconButton className={classes.button}>
+            <IconButton href="/series" className={classes.button}>
               <List />
             </IconButton>
             <IconButton className={classes.button}>

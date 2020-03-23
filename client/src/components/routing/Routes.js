@@ -5,6 +5,7 @@ import PrivateRoute from '../routing/PrivateRoute';
 import Alert from '../layout/Alert';
 import Login from '../auth/Login';
 import Register from '../auth/Register';
+import ProfileSeries from '../profile/ProfileSeries';
 import ProfileSeriesAdd from '../profile/ProfileSeriesAdd';
 
 const Routes = () => {
@@ -14,6 +15,7 @@ const Routes = () => {
       <Switch>
         <Route exact path="/login" component={Login} />
         <Route exact path="/register" component={Register} />
+        <PrivateRoute exact path="/series" component={ProfileSeries} />
         <PrivateRoute exact path="/series/add" component={ProfileSeriesAdd} />
       </Switch>
     </Fragment>
