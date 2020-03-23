@@ -3,7 +3,9 @@ import {
   PROFILE_GET,
   PROFILE_SERIES_UPDATE,
   PROFILE_SERIES_CURRENT,
-  PROFILE_SERIES_ALL
+  PROFILE_SERIES_ALL,
+  SERIES_UPDATE,
+  PROFILE_EPISODES_UPDATE
 } from '../actions/types';
 
 const initialState = {
@@ -20,6 +22,8 @@ export default function(state = initialState, action) {
     case PROFILE_CREATE:
     case PROFILE_GET:
     case PROFILE_SERIES_UPDATE:
+    case SERIES_UPDATE:
+    case PROFILE_EPISODES_UPDATE:
       return {
         ...state,
         profile: payload,
