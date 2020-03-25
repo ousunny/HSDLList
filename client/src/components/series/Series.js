@@ -141,7 +141,7 @@ const Series = ({
           </TableBody>
         </Table>
       </TableContainer>
-      <ExpansionPanel>
+      <ExpansionPanel expanded>
         <ExpansionPanelSummary>
           <Typography>All Magnets</Typography>
           <IconButton onClick={updateMagnetBlock}>
