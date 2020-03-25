@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -8,7 +9,7 @@ import {
   Toolbar,
   Typography,
   IconButton,
-  Link,
+  Link as MuiLink,
   Button
 } from '@material-ui/core';
 
@@ -29,6 +30,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const CollisionLink = React.forwardRef((props, ref) => (
+  <Link innerRef={ref} to={props.href} {...props} />
+));
+
 const NavBar = ({ auth: { isAuthenticated } }) => {
   const classes = useStyles();
 
@@ -36,20 +41,29 @@ const NavBar = ({ auth: { isAuthenticated } }) => {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h5" className={classes.title}>
-          <Link
+          <MuiLink
             href="/"
+            component={CollisionLink}
             className={classes.link}
             style={{ textDecoration: 'none' }}
           >
             HSDLList
-          </Link>
+          </MuiLink>
         </Typography>
         {isAuthenticated ? (
           <div>
-            <IconButton href="/series/add" className={classes.button}>
+            <IconButton
+              href="/series/add"
+              component={CollisionLink}
+              className={classes.button}
+            >
               <Add />
             </IconButton>
-            <IconButton href="/series" className={classes.button}>
+            <IconButton
+              href="/series"
+              component={CollisionLink}
+              className={classes.button}
+            >
               <List />
             </IconButton>
             <IconButton className={classes.button}>
@@ -58,10 +72,18 @@ const NavBar = ({ auth: { isAuthenticated } }) => {
           </div>
         ) : (
           <div>
-            <Button href="/register" className={classes.button}>
+            <Button
+              href="/register"
+              component={CollisionLink}
+              className={classes.button}
+            >
               Register
             </Button>
-            <Button href="/login" className={classes.button}>
+            <Button
+              href="/login"
+              component={CollisionLink}
+              className={classes.button}
+            >
               Login
             </Button>
           </div>

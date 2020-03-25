@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -12,7 +13,7 @@ import {
   Grid,
   TextField,
   Button,
-  Link
+  Link as MuiLink
 } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -38,6 +39,10 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center'
   }
 }));
+
+const CollisionLink = React.forwardRef((props, ref) => (
+  <Link innerRef={ref} to={props.href} {...props} />
+));
 
 const Register = ({
   setAlert,
@@ -66,6 +71,8 @@ const Register = ({
       register({ username, password });
     }
   };
+
+  if (isAuthenticated && user) return <Redirect to="/" />;
 
   return (
     <Paper className={classes.root}>
@@ -118,7 +125,9 @@ const Register = ({
             </Button>
           </Grid>
           <Grid item xs={12} className={classes.center}>
-            <Link href="/login">Already have an account? Click here!</Link>
+            <MuiLink href="/login" component={CollisionLink}>
+              Already have an account? Click here!
+            </MuiLink>
           </Grid>
         </Grid>
       </form>
