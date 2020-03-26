@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -16,7 +16,6 @@ import {
   Typography,
   IconButton,
   Paper,
-  Box,
   CircularProgress,
   Checkbox,
   Link,
@@ -25,7 +24,7 @@ import {
   ExpansionPanelDetails,
   TextField
 } from '@material-ui/core';
-import { Delete, Update, ExpandMore } from '@material-ui/icons';
+import { Delete, Update } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   center: {

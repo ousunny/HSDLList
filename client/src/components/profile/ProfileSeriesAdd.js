@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -16,18 +16,13 @@ import {
   TableContainer,
   Table,
   TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
   Typography,
-  IconButton,
   Tabs,
   Tab,
   Paper,
   Box,
   CircularProgress
 } from '@material-ui/core';
-import { Add, Remove } from '@material-ui/icons';
 
 function TabPanel(props) {
   const { children, value, index, ...others } = props;

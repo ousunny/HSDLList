@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -6,14 +6,7 @@ import { setAlert } from '../../actions/alert';
 import { addProfileSeries } from '../../actions/profile';
 
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  TableCell,
-  TableRow,
-  Typography,
-  IconButton,
-  CircularProgress,
-  TextField
-} from '@material-ui/core';
+import { TableCell, TableRow, IconButton, TextField } from '@material-ui/core';
 import { AddCircleOutline } from '@material-ui/icons';
 import { green } from '@material-ui/core/colors';
 

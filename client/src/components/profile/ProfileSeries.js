@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -13,10 +13,8 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Typography,
   IconButton,
   Paper,
-  Box,
   CircularProgress,
   Checkbox
 } from '@material-ui/core';
