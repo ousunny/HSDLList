@@ -19,6 +19,7 @@ const Routes = () => {
         <PrivateRoute exact path="/series" component={ProfileSeries} />
         <PrivateRoute exact path="/series/add" component={ProfileSeriesAdd} />
         <PrivateRoute exact path="/" component={Series} />
+        <Route component={Login} />
       </Switch>
     </Fragment>
   );
