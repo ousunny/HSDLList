@@ -43,7 +43,8 @@ TabPanel.propTypes = {
 
 const useStyles = makeStyles(theme => ({
   backdrop: {
-    zIndex: theme.zIndex.drawer + 1
+    backgroundColor: 'rgba(0,0,0,0.85)',
+    color: '#fff'
   }
 }));
 
@@ -71,24 +72,25 @@ const ProfileSeriesAdd = ({
 
   return (
     <Fragment>
-      <Paper className={classes.root}>
-        <Tabs
-          value={tab}
-          onChange={handleTabChange}
-          indicatorColor="primary"
-          textColor="primary"
-          centered
-        >
-          <Tab label="Currently Airing" />
-          <Tab label="All Shows" />
-        </Tabs>
-      </Paper>
       {loading ? (
         <Backdrop className={classes.backdrop} open={true}>
-          <CircularProgress />
+          <CircularProgress color="inherit" />
         </Backdrop>
       ) : (
         <Fragment>
+          <Paper className={classes.root}>
+            <Tabs
+              value={tab}
+              onChange={handleTabChange}
+              indicatorColor="primary"
+              textColor="primary"
+              centered
+            >
+              <Tab label="Currently Airing" />
+              <Tab label="All Shows" />
+            </Tabs>
+          </Paper>
+
           <TabPanel value={tab} index={0}>
             <TableContainer>
               <Table>
