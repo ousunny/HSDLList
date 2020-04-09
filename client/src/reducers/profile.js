@@ -5,6 +5,7 @@ import {
   PROFILE_SERIES_CURRENT,
   PROFILE_SERIES_ALL,
   SERIES_UPDATE,
+  SERIES_UPDATING,
   PROFILE_EPISODES_UPDATE
 } from '../actions/types';
 
@@ -12,7 +13,8 @@ const initialState = {
   profile: null,
   current: [],
   all: [],
-  loading: true
+  loading: true,
+  isFetching: false
 };
 
 export default function(state = initialState, action) {
@@ -27,7 +29,13 @@ export default function(state = initialState, action) {
       return {
         ...state,
         profile: payload,
-        loading: false
+        loading: false,
+        isFetching: false
+      };
+    case SERIES_UPDATING:
+      return {
+        ...state,
+        isFetching: payload
       };
     case PROFILE_SERIES_CURRENT:
       return {
@@ -55,7 +63,6 @@ export default function(state = initialState, action) {
         ),
         loading: false
       };
-
     default:
       return state;
   }

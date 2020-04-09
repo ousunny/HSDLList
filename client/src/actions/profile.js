@@ -6,6 +6,7 @@ import {
   PROFILE_SERIES_CURRENT,
   PROFILE_SERIES_ALL,
   SERIES_UPDATE,
+  SERIES_UPDATING,
   PROFILE_EPISODES_UPDATE
 } from './types';
 
@@ -134,6 +135,11 @@ export const removeProfileSeries = showIds => async dispatch => {
 
 export const getUpdates = () => async dispatch => {
   try {
+    dispatch({
+      type: SERIES_UPDATING,
+      payload: true
+    });
+
     const res = await axios.get('/api/series/update');
 
     dispatch({

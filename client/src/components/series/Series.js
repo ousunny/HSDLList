@@ -48,11 +48,9 @@ const Series = ({
   getProfile,
   getUpdates,
   removeEpisodes,
-  profile: { profile, loading }
+  profile: { profile, loading, isFetching }
 }) => {
   const classes = useStyles();
-
-  const [updating, setUpdating] = React.useState(false);
 
   useEffect(() => {
     getProfile();
@@ -116,7 +114,7 @@ const Series = ({
                     <IconButton
                       className={classes.icon}
                       onClick={handleUpdate}
-                      disabled={loading}
+                      disabled={isFetching}
                     >
                       <Update />
                     </IconButton>
