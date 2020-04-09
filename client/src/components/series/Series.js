@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -22,7 +22,8 @@ import {
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
-  TextField
+  TextField,
+  Backdrop
 } from '@material-ui/core';
 import { Delete, Update } from '@material-ui/icons';
 
@@ -35,6 +36,10 @@ const useStyles = makeStyles(theme => ({
   },
   textfield: {
     width: '100%'
+  },
+  backdrop: {
+    backgroundColor: 'rgba(0,0,0,0.85)',
+    color: '#fff'
   }
 }));
 
@@ -46,6 +51,8 @@ const Series = ({
   profile: { profile, loading }
 }) => {
   const classes = useStyles();
+
+  const [updating, setUpdating] = React.useState(false);
 
   useEffect(() => {
     getProfile();
@@ -91,76 +98,81 @@ const Series = ({
   };
 
   return (
-    <Paper>
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <IconButton className={classes.icon} onClick={handleDelete}>
-                  <Delete />
-                </IconButton>
-                <IconButton className={classes.icon} onClick={handleUpdate}>
-                  <Update />
-                </IconButton>
-              </TableCell>
-              <TableCell>Title</TableCell>
-              <TableCell align="right">Episode</TableCell>
-              <TableCell align="right">Links</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell>
-                  <CircularProgress />
-                </TableCell>
-              </TableRow>
-            ) : (
-              profile.episodes.map(episode => (
-                <TableRow key={episode._id}>
+    <Fragment>
+      {loading ? (
+        <Backdrop className={classes.backdrop} open={true}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : (
+        <Paper>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
                   <TableCell>
-                    <Checkbox
-                      onClick={e => handleSelect(e)}
-                      value={episode._id}
-                    />
+                    <IconButton className={classes.icon} onClick={handleDelete}>
+                      <Delete />
+                    </IconButton>
+                    <IconButton
+                      className={classes.icon}
+                      onClick={handleUpdate}
+                      disabled={loading}
+                    >
+                      <Update />
+                    </IconButton>
                   </TableCell>
-                  <TableCell>{episode.title}</TableCell>
-                  <TableCell align="right">{episode.episode}</TableCell>
-                  <TableCell align="right">
-                    {episode.links['720p'].map(link => (
-                      <Link key={link._id} href={link.link}>
-                        720p-{link.server}
-                      </Link>
-                    ))}
-                  </TableCell>
+                  <TableCell>Title</TableCell>
+                  <TableCell align="right">Episode</TableCell>
+                  <TableCell align="right">Links</TableCell>
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <ExpansionPanel expanded>
-        <ExpansionPanelSummary>
-          <Typography>All Magnets</Typography>
-          <IconButton onClick={updateMagnetBlock}>
-            <Update />
-          </IconButton>
-        </ExpansionPanelSummary>
-        <ExpansionPanelDetails>
-          <TextField
-            multiline
-            InputLabelProps={{ readOnly: true }}
-            value={magnetBlock}
-            onClick={e => {
-              e.target.focus();
-              e.target.select();
-            }}
-            className={classes.textfield}
-          />
-        </ExpansionPanelDetails>
-      </ExpansionPanel>
-    </Paper>
+              </TableHead>
+
+              <TableBody>
+                {profile.episodes.map(episode => (
+                  <TableRow key={episode._id}>
+                    <TableCell>
+                      <Checkbox
+                        onClick={e => handleSelect(e)}
+                        value={episode._id}
+                      />
+                    </TableCell>
+                    <TableCell>{episode.title}</TableCell>
+                    <TableCell align="right">{episode.episode}</TableCell>
+                    <TableCell align="right">
+                      {episode.links['720p'].map(link => (
+                        <Link key={link._id} href={link.link}>
+                          720p-{link.server}
+                        </Link>
+                      ))}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <ExpansionPanel expanded>
+            <ExpansionPanelSummary>
+              <Typography>All Magnets</Typography>
+              <IconButton onClick={updateMagnetBlock}>
+                <Update />
+              </IconButton>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails>
+              <TextField
+                multiline
+                InputLabelProps={{ readOnly: true }}
+                value={magnetBlock}
+                onClick={e => {
+                  e.target.focus();
+                  e.target.select();
+                }}
+                className={classes.textfield}
+              />
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+        </Paper>
+      )}
+    </Fragment>
   );
 };
 
