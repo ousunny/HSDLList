@@ -21,7 +21,8 @@ import {
   Tab,
   Paper,
   Box,
-  CircularProgress
+  CircularProgress,
+  Backdrop
 } from '@material-ui/core';
 
 function TabPanel(props) {
@@ -41,8 +42,8 @@ TabPanel.propTypes = {
 };
 
 const useStyles = makeStyles(theme => ({
-  center: {
-    textAlign: 'center'
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1
   }
 }));
 
@@ -83,9 +84,9 @@ const ProfileSeriesAdd = ({
         </Tabs>
       </Paper>
       {loading ? (
-        <div className={classes.center}>
+        <Backdrop className={classes.backdrop} open={true}>
           <CircularProgress />
-        </div>
+        </Backdrop>
       ) : (
         <Fragment>
           <TabPanel value={tab} index={0}>
