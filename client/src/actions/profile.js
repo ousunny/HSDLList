@@ -6,7 +6,7 @@ import {
   PROFILE_SERIES_CURRENT,
   PROFILE_SERIES_ALL,
   SERIES_UPDATE,
-  SERIES_UPDATING,
+  FETCHING,
   PROFILE_EPISODES_UPDATE
 } from './types';
 
@@ -136,7 +136,7 @@ export const removeProfileSeries = showIds => async dispatch => {
 export const getUpdates = () => async dispatch => {
   try {
     dispatch({
-      type: SERIES_UPDATING,
+      type: FETCHING,
       payload: true
     });
 

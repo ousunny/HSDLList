@@ -5,7 +5,7 @@ import {
   PROFILE_SERIES_CURRENT,
   PROFILE_SERIES_ALL,
   SERIES_UPDATE,
-  SERIES_UPDATING,
+  FETCHING,
   PROFILE_EPISODES_UPDATE
 } from '../actions/types';
 
@@ -32,7 +32,7 @@ export default function(state = initialState, action) {
         loading: false,
         isFetching: false
       };
-    case SERIES_UPDATING:
+    case FETCHING:
       return {
         ...state,
         isFetching: payload
