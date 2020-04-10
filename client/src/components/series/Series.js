@@ -61,6 +61,7 @@ const Series = ({
 
   const handleDelete = () => {
     removeEpisodes(selected);
+    setSelected([]);
   };
 
   const handleUpdate = () => {
