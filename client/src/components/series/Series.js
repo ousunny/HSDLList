@@ -95,6 +95,18 @@ const Series = ({
     setMagnetBlock(newMagnetBlock);
   };
 
+  const handleSelectAll = e => {
+    if (e.target.checked) {
+      const newSelecteds = profile.episodes.map(episode => episode._id);
+      setSelected(newSelecteds);
+      return;
+    }
+
+    setSelected([]);
+  };
+
+  const isSelected = id => selected.indexOf(id) !== -1;
+
   return (
     <Fragment>
       {loading ? (
@@ -108,6 +120,17 @@ const Series = ({
               <TableHead>
                 <TableRow>
                   <TableCell>
+                    <Checkbox
+                      indeterminate={
+                        selected.length > 0 &&
+                        selected.length < profile.episodes.length
+                      }
+                      checked={
+                        profile.episodes.length > 0 &&
+                        selected.length === profile.episodes.length
+                      }
+                      onChange={e => handleSelectAll(e)}
+                    />
                     <IconButton className={classes.icon} onClick={handleDelete}>
                       <Delete />
                     </IconButton>
@@ -131,11 +154,16 @@ const Series = ({
 
               <TableBody>
                 {profile.episodes.map(episode => (
-                  <TableRow key={episode._id}>
+                  <TableRow
+                    hover
+                    key={episode._id}
+                    selected={isSelected(episode._id)}
+                  >
                     <TableCell>
                       <Checkbox
                         onClick={e => handleSelect(e)}
                         value={episode._id}
+                        checked={isSelected(episode._id)}
                       />
                     </TableCell>
                     <TableCell>{episode.title}</TableCell>
