@@ -57,7 +57,6 @@ const Series = ({
   }, [getProfile]);
 
   const [selected, setSelected] = React.useState([]);
-  const [magnetBlock, setMagnetBlock] = React.useState('');
 
   const handleDelete = () => {
     removeEpisodes(selected);
@@ -85,15 +84,15 @@ const Series = ({
   };
 
   const updateMagnetBlock = () => {
-    let newMagnetBlock = '';
+    let magnetBlock = '';
 
     profile.episodes.map(episode =>
       episode.links['720p'].map(
-        link => (newMagnetBlock = newMagnetBlock.concat(`${link.link}\n`))
+        link => (magnetBlock = magnetBlock.concat(`${link.link}\n`))
       )
     );
 
-    setMagnetBlock(newMagnetBlock);
+    return magnetBlock;
   };
 
   const handleSelectAll = e => {
@@ -184,15 +183,12 @@ const Series = ({
           <ExpansionPanel expanded>
             <ExpansionPanelSummary>
               <Typography>All Magnets</Typography>
-              <IconButton onClick={updateMagnetBlock}>
-                <Update />
-              </IconButton>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
               <TextField
                 multiline
                 InputLabelProps={{ readOnly: true }}
-                value={magnetBlock}
+                value={updateMagnetBlock()}
                 onClick={e => {
                   e.target.focus();
                   e.target.select();
