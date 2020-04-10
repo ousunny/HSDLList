@@ -116,7 +116,11 @@ const Series = ({
                       onClick={handleUpdate}
                       disabled={isFetching}
                     >
-                      <Update />
+                      {isFetching ? (
+                        <CircularProgress size="24px" />
+                      ) : (
+                        <Update />
+                      )}
                     </IconButton>
                   </TableCell>
                   <TableCell>Title</TableCell>
