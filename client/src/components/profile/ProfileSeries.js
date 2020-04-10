@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { Fragment, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -16,7 +16,8 @@ import {
   IconButton,
   Paper,
   CircularProgress,
-  Checkbox
+  Checkbox,
+  Backdrop
 } from '@material-ui/core';
 import { Delete } from '@material-ui/icons';
 
@@ -26,6 +27,10 @@ const useStyles = makeStyles(theme => ({
   },
   deleteIcon: {
     padding: '9px'
+  },
+  backdrop: {
+    backgroundColor: 'rgba(0,0,0,0.85)',
+    color: '#fff'
   }
 }));
 
@@ -45,6 +50,7 @@ const ProfileSeries = ({
 
   const handleDelete = () => {
     removeProfileSeries(selected);
+    setSelected([]);
   };
 
   const handleSelect = e => {
@@ -63,49 +69,78 @@ const ProfileSeries = ({
     setSelected(newSelected);
   };
 
+  const handleSelectAll = e => {
+    console.log(selected);
+    if (e.target.checked) {
+      const newSelecteds = profile.series.map(show => show.showId);
+      setSelected(newSelecteds);
+      return;
+    }
+
+    setSelected([]);
+  };
+
+  const isSelected = id => selected.indexOf(id) !== -1;
+
   return (
-    <Paper>
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <IconButton
-                  className={classes.deleteIcon}
-                  onClick={handleDelete}
-                >
-                  <Delete />
-                </IconButton>
-              </TableCell>
-              <TableCell>Title</TableCell>
-              <TableCell align="right">Latest episode</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell>
-                  <CircularProgress />
-                </TableCell>
-              </TableRow>
-            ) : (
-              profile.series.map(show => (
-                <TableRow key={show.showId}>
+    <Fragment>
+      {loading ? (
+        <Backdrop className={classes.backdrop} open={true}>
+          <CircularProgress color="inherit" />
+        </Backdrop>
+      ) : (
+        <Paper>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
                   <TableCell>
                     <Checkbox
-                      onClick={e => handleSelect(e)}
-                      value={show.showId}
+                      indeterminate={
+                        selected.length > 0 &&
+                        selected.length < profile.series.length
+                      }
+                      checked={
+                        profile.series.length > 0 &&
+                        selected.length === profile.series.length
+                      }
+                      onChange={e => handleSelectAll(e)}
                     />
+                    <IconButton
+                      className={classes.deleteIcon}
+                      onClick={handleDelete}
+                    >
+                      <Delete />
+                    </IconButton>
                   </TableCell>
-                  <TableCell>{show.title}</TableCell>
-                  <TableCell align="right">{show.latest}</TableCell>
+                  <TableCell>Title</TableCell>
+                  <TableCell align="right">Latest episode</TableCell>
                 </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </Paper>
+              </TableHead>
+              <TableBody>
+                {profile.series.map(show => (
+                  <TableRow
+                    hover
+                    key={show.showId}
+                    selected={isSelected(show.showId)}
+                  >
+                    <TableCell>
+                      <Checkbox
+                        onClick={e => handleSelect(e)}
+                        value={show.showId}
+                        checked={isSelected(show.showId)}
+                      />
+                    </TableCell>
+                    <TableCell>{show.title}</TableCell>
+                    <TableCell align="right">{show.latest}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+      )}
+    </Fragment>
   );
 };
 
