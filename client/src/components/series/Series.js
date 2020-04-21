@@ -40,6 +40,9 @@ const useStyles = makeStyles(theme => ({
   backdrop: {
     backgroundColor: 'rgba(0,0,0,0.85)',
     color: '#fff'
+  },
+  episodesCount: {
+    padding: '9px'
   }
 }));
 
@@ -145,6 +148,9 @@ const Series = ({
                         <Update />
                       )}
                     </IconButton>
+                    <span
+                      className={classes.episodesCount}
+                    >{`${profile.episodes.length} episodes`}</span>
                   </TableCell>
                   <TableCell>Title</TableCell>
                   <TableCell align="right">Episode</TableCell>
