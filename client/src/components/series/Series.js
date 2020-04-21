@@ -25,7 +25,7 @@ import {
   TextField,
   Backdrop
 } from '@material-ui/core';
-import { Delete, Update } from '@material-ui/icons';
+import { Delete, Update, ExpandMore } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   center: {
@@ -186,8 +186,8 @@ const Series = ({
               </TableBody>
             </Table>
           </TableContainer>
-          <ExpansionPanel expanded>
-            <ExpansionPanelSummary>
+          <ExpansionPanel defaultExpanded>
+            <ExpansionPanelSummary expandIcon={<ExpandMore />}>
               <Typography>All Magnets</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
