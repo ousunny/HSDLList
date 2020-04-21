@@ -146,6 +146,8 @@ export const getUpdates = () => async dispatch => {
       type: SERIES_UPDATE,
       payload: res.data
     });
+
+    dispatch(setAlert('Updated!', 'success', 3000));
   } catch (err) {
     const { errors } = err.response.data;
 
@@ -171,6 +173,8 @@ export const removeEpisodes = episodes => async dispatch => {
       type: PROFILE_EPISODES_UPDATE,
       payload: res.data
     });
+
+    dispatch(setAlert(`${episodes.length} episodes removed`, 'success', 3000));
   } catch (err) {
     const { errors } = err.response.data;
 
